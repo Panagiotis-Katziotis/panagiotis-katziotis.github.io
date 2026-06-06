@@ -4,137 +4,525 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panagiotis Katziotis</title>
-
 <style>
+  /* ─── FONTS ────────────────────────────────────────────────── */
+  @font-face {
+    font-family: 'Font1';
+    src: url('more/fonts/font1.ttf') format('truetype');
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Font2';
+    src: url('more/fonts/font2.ttf') format('truetype');
+    font-display: swap;
+  }
+
+  /* ─── RESET & BASE ──────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    margin: 0;
-    font-family: Impact, 'Arial Narrow Bold', sans-serif, sans-serif;
-    background: #ffffff;
-    text-align: center;
+    background: #0a0a0a;
+    color: #d4cfc8;
+    font-family: Georgia, serif;
+    overflow-x: hidden;
   }
 
-  .container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-  }
-
-  h1 {
-    font-size: 3.5rem;
-  }
-
-  h2 {
-    font-weight: normal;
-    font-size: 2.2rem;
-  }
-
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
-    margin: 20px 0;
-  }
-
-  .links a {
-    text-decoration: none;
-    background: black;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 4px;
-    transition: 0.3s;
-  }
-
-  .links a:hover {
-    background: #473b3b;
-  }
-
+  /* ─── SECTION BASE ──────────────────────────────────────────── */
   section {
-    margin-top: 100px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.2rem;
   }
 
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 1 — HERO
+  ══════════════════════════════════════════════════════════════ */
+  #hero {
+    max-width: 100%;
+    padding: 0;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #07060d;
+    overflow: hidden;
+  }
+
+  /* Radial vignette: dark purple edges, lighter centre */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 65% 55% at 50% 42%,
+      rgba(20,10,40,0.0) 0%,
+      rgba(15,8,30,0.5) 50%,
+      rgba(5,3,15,0.95) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Purple glow orb — left */
+  #hero::after {
+    content: '';
+    position: absolute;
+    width: 55vw;
+    height: 55vw;
+    max-width: 500px;
+    max-height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(120,60,220,0.22) 0%, transparent 70%);
+    top: 10%;
+    left: -10%;
+    z-index: 0;
+    animation: driftA 9s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  /* Purple glow orb — right */
+  .hero-glow-right {
+    position: absolute;
+    width: 50vw;
+    height: 50vw;
+    max-width: 440px;
+    max-height: 440px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(160,40,255,0.18) 0%, transparent 70%);
+    bottom: 5%;
+    right: -8%;
+    z-index: 0;
+    animation: driftB 11s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  /* Subtle top-centre bloom behind the GIF */
+  .hero-glow-centre {
+    position: absolute;
+    width: 60vw;
+    height: 40vw;
+    max-width: 520px;
+    max-height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(100,50,200,0.13) 0%, transparent 65%);
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @keyframes driftA {
+    from { transform: translate(0, 0) scale(1);   opacity: 0.8; }
+    to   { transform: translate(6%, 8%) scale(1.1); opacity: 1;   }
+  }
+  @keyframes driftB {
+    from { transform: translate(0, 0) scale(1.05); opacity: 1;   }
+    to   { transform: translate(-5%, -6%) scale(0.95); opacity: 0.7; }
+  }
+
+  .hero-media {
+    position: relative;
+    z-index: 2;
+    width: min(420px, 88vw);
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow:
+      0 0 40px rgba(130,60,240,0.35),
+      0 0 80px rgba(100,40,200,0.2),
+      0 0 0 1px rgba(160,80,255,0.2);
+  }
+  .hero-media img,
+  .hero-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.92;
+  }
+  /* Fallback placeholder when GIF not loaded */
+  .hero-media-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1612 0%, #2a2318 50%, #1a1612 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a4035;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    position: relative;
+    z-index: 2;
+    font-family: 'Font1', 'Courier New', monospace;
+    font-size: clamp(2.4rem, 9vw, 5rem);
+    color: #e8e0f8;
+    text-align: center;
+    margin-top: 1.4rem;
+    letter-spacing: 0.04em;
+    text-shadow:
+      0 0 60px rgba(160,80,255,0.45),
+      0 0 20px rgba(140,60,240,0.3),
+      0 2px 6px rgba(0,0,0,0.8);
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 2 — WORK
+  ══════════════════════════════════════════════════════════════ */
+  #work {
+    border-top: 1px solid #1e1c18;
+  }
+
+  .section-intro {
+    font-family: 'Font2', Georgia, serif;
+    font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+    color: #bfb8ac;
+    line-height: 1.5;
+    margin-bottom: 2.4rem;
+  }
+
+  /* Work category title labels */
+  .cat-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7a7060;
+    margin-top: 0.35rem;
+    font-family: Georgia, serif;
+  }
+
+
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(240px, 46vw), 1fr));
+    gap: 1.2rem;
+  }
+
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    background: #111009;
+    border: 1px solid #2a2620;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .work-card:hover {
+    border-color: #6a5e48;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+  .work-card img {
+    width: 100%;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    display: block;
+    background: #1a1814;
+  }
+  .work-card-info {
+    padding: 0.9rem 1rem 1rem;
+  }
+  .work-card-name {
+    font-family: 'Font2', Georgia, serif;
+    font-size: 1.05rem;
+    color: #d4ccc0;
+    font-weight: normal;
+  }
+  .work-card-sub {
+    font-size: 0.7rem;
+    color: #7a7060;
+    margin-top: 0.2rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* category wrapper */
+  .work-category {
+    margin-bottom: 2.2rem;
+  }
+  .work-category:last-child { margin-bottom: 0; }
+
+
+
+  .btn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 44vw), 1fr));
+    gap: 0.65rem;
+    margin-top: 1rem;
+  }
+
+  .btn-pill {
+    display: block;
+    background: #131210;
+    border: 1px solid #2c2820;
+    border-radius: 5px;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: #c8c0b0;
+    font-family: Georgia, serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
+    cursor: pointer;
+  }
+  .btn-pill:hover {
+    background: #1e1c18;
+    border-color: #7a6e58;
+    color: #e8e0d0;
+    transform: translateY(-1px);
+  }
+
+  /* ─── SECTION TITLES ────────────────────────────────────────── */
+  .section-title {
+    font-family: 'Font2', Georgia, serif;
+    font-size: clamp(1.3rem, 5vw, 1.9rem);
+    color: #d4ccc0;
+    font-weight: normal;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 4 — WHO I AM
+  ══════════════════════════════════════════════════════════════ */
+  .who-layout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .who-text p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #b8b0a4;
+    margin-bottom: 0.8rem;
+  }
+  .who-image {
+    width: min(180px, 40vw);
+    flex-shrink: 0;
+  }
+  .who-image img {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #2a2620;
+    display: block;
+    background: #1a1814;
+  }
+  /* On narrow screens stack image below text */
+  @media (max-width: 520px) {
+    .who-layout {
+      grid-template-columns: 1fr;
+    }
+    .who-image {
+      width: 60%;
+      margin: 0 auto;
+    }
+  }
+
+  /* ─── DIVIDERS ──────────────────────────────────────────────── */
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #2a2620 20%, #2a2620 80%, transparent);
+    margin: 0;
+  }
+
+  /* ─── FOOTER ────────────────────────────────────────────────── */
   footer {
-    margin-top: 90px;
-    font-size: 1rem;
-    opacity: 0.6;
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.72rem;
+    color: #3a3630;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  /* Mobile optimization */
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 2rem;
-    }
-
-    .links a {
-      width: 100%;
-    }
+  /* ─── SCROLL FADE-IN ────────────────────────────────────────── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
   }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-
-<h1>Hello World!</h1>
-
-<h2>Hello everyone, welcome to my site. I'm Panagiotis, a student from Greece, and to show the things I create, I hope you'll like them.</h2>
-
-<div class="links">
-  <a href="https://github.com/Panagiotis-Katziotis">GitHub</a>
-  <a href="https://www.youtube.com/@Panagiotis_Katziotis">YouTube</a>
-  <a href="https://bsky.app/profile/panagiotiskatz.bsky.social">BlueSky</a>
-  <a href="https://www.pi.fyi/u/pkatz">PI.FYI</a>
-  <a href="https://app.daily.dev/panagiotis_katziotis">daily.dev</a>
-  <a href="https://stackoverflow.com/users/32604858/%ce%a0%ce%b1%ce%bd%ce%b1%ce%b3%ce%b9%cf%8e%cf%84%ce%b7%cf%82-%ce%9a%ce%b1%cf%84%ce%b6%ce%b9%cf%8e%cf%84%ce%b7%cf%82">Stack Overflow</a>
-  <a href="https://surf.social/feed/surf%2Fprofile%2F01krgy0n42vj52n0krcmntwfe6">Surf</a>
-  <a href="https://mastodon.social/@panagiotiskatz">Mastodon</a>
-  <a href="https://panagiotis-katziotis.pckt.blog/">pckt</a>
-  <a href="https://linktr.ee/panagiotis.digitalperform">More</a>
-</div>
-
-<section>
-<h3>From me:</h3>
-<div class="links">
-  <a href="https://panagiotis-katziotis.github.io/music-library/">Music Library</a>
-  <a href="https://panagiotis-katziotis.github.io/Panos_Radio/">Panos Radio</a>
-  <a href="https://panagiotis-katziotis.github.io/triangles_web">Wallpaper Creator</a>
-  <a href="https://panagiotis-katziotis.github.io/swanproject">Swan Project</a>
-  <a href="https://panagiotis-katziotis.github.io/mini_retro_car">Retro Car Game</a>
-  <a href="https://panagiotis-katziotis.github.io/flappybird">Retro Flappy Bird Game</a>
-  <a href="https://panagiotis-katziotis.github.io/jumpgame">Retro Jump Game</a>
-  <a href="https://panagiotis-katziotis.github.io/cyberdrive">Cyberdrive</a>
-  <a href="https://panagiotis-katziotis.github.io/wolf-photo-editor/">Photo Editor</a>
-  <a href="https://panagiotis-katziotis.github.io/wolf-video-editor/">Video Editor</a>
-  <a href="https://www.pi.fyi/subscribe/referral/pkatz">Help me on PI.FYI</a>
-  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">More Coming</a>
-</div>
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 1 — HERO
+══════════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-glow-right"></div>
+  <div class="hero-glow-centre"></div>
+  <div class="hero-media">
+    <!-- Replace hero.gif with your actual GIF/PNG filename in more/images/ -->
+    <img src="more/images/hero.gif"
+         alt="Hero animation"
+         onerror="this.parentElement.innerHTML='<div class=\'hero-media-placeholder\'>[ media ]</div>'">
+  </div>
+  <h1 class="hero-title">Hello World</h1>
 </section>
 
-<section>
-<h3>Other:</h3>
-<div class="links">
-  <a href="https://winbows.neocities.org">Winbows XP</a>
-  <a href="https://nenrikido.neocities.org">Nenrikido</a>
-  <a href="https://win99.dev">Windows 99</a>
-  <a href="https://kuroi.com.br">KuroiOS</a>
-  <a href="https://message.neocities.org">Nightscape</a>
-  <a href="https://onio.club">onio.club</a>
-  <a href="https://onio.club/test">onio.club Underground</a>
-  <a href="https://www.drifted.com/unbounded">UNBOUNDED™</a>
- <a href="https://standardhub.github.io/sequence-puzzle/sequence%20puzzle.html">Number Puzzle</a>
- <a href="https://ishandutta2007.github.io/uttt/">Ultimate Tic-Tac-Toe</a>
-<a href="https://quenq.com/apps/vice-city/">GTA Vice City Online</a>
-</div>
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 2 — MY WORK
+══════════════════════════════════════════════════════════════ -->
+<section id="work" class="fade-in">
+  <p class="section-intro">Hi, I'm Panagiotis and this is my corner of the internet.
+
+  <!-- ─── CATEGORY: Digital Media ─────────────────────────────── -->
+  <div class="work-category">
+    <div class="cat-label">Digital Media</div>
+    <div class="work-grid" style="margin-top:0.6rem;">
+
+      <!-- ADD / REMOVE / EDIT work cards here -->
+      <a class="work-card" href="#" target="_blank" rel="noopener">
+        <img src="more/images/zeromoney.png" alt="Zero Money Productions"
+             onerror="this.style.minHeight='120px';this.style.background='#1a1814';">
+        <div class="work-card-info">
+          <span class="work-card-name">Zero Money Productions</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ─── CATEGORY: FOSS Technology ───────────────────────────── -->
+  <div class="work-category">
+    <div class="cat-label">FOSS Technology</div>
+    <div class="work-grid" style="margin-top:0.6rem;">
+
+      <!-- ADD / REMOVE / EDIT work cards here -->
+      <a class="work-card" href="https://panagiotis-katziotis.github.io/swanproject" target="_blank" rel="noopener">
+        <img src="more/images/swan.png" alt="Swan Project"
+             onerror="this.style.minHeight='120px';this.style.background='#1a1814';">
+        <div class="work-card-info">
+          <span class="work-card-name">Swan Project</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
 </section>
 
-<footer>
-Website under construction – Παναγιώτης Κατζιώτης
-</footer>
+<div class="section-divider"></div>
 
-</div>
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 3 — LITTLE PROJECTS
+══════════════════════════════════════════════════════════════ -->
+<section id="projects" class="fade-in">
+  <h2 class="section-title">My little projects!</h2>
+
+  <!-- ADD / REMOVE / EDIT buttons here — each <a> is one button -->
+  <div class="btn-grid">
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/music-library/" target="_blank" rel="noopener">Music Library</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/Panos_Radio/" target="_blank" rel="noopener">Panos Radio</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/triangles_web" target="_blank" rel="noopener">Wallpaper Creator</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/wolf-photo-editor/" target="_blank" rel="noopener">Photo Editor</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/wolf-video-editor/" target="_blank" rel="noopener">Video Editor</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/mini_retro_car" target="_blank" rel="noopener">Retro Car Game</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/flappybird" target="_blank" rel="noopener">Retro Flappy Bird Game</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/jumpgame" target="_blank" rel="noopener">Retro Jump Game</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.github.io/cyberdrive" target="_blank" rel="noopener">Cyberdrive</a>
+    <a class="btn-pill" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">More coming</a>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 4 — WHO I AM - the way i am
+══════════════════════════════════════════════════════════════ -->
+<section id="about" class="fade-in">
+  <h2 class="section-title">Who I am</h2>
+  <div class="who-layout">
+    <div class="who-text">
+Hello, I'm Παναγιώτης Κατζιώτης, and this is my website. Here, you can see my work.<br>I'm a student from Athens (Greece), who likes to experiment with many different things. I'm a programmer, but I also do video editing, do some 3D graphics, music production and art. I take photos, mostly of sunsets, and upload them to Bluesky.<br>I created Swan Project in 2025 to develop open-source software, such as Swan Browser and HeronOS. This year, I started Zero Money Productions, an indie studio focused on digital media production and collaborations with other creators.<br>Καλή δύναμη σε όλους! ;)</p>
+    </div>
+    <div class="who-image">
+      <!-- Replace photo.png with your actual image filename -->
+      <img src="more/images/photo.png" alt="Panagiotis Katziotis"
+           onerror="this.style.minHeight='150px';this.style.background='#1a1814';">
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 5 — MY SOCIALS
+══════════════════════════════════════════════════════════════ -->
+<section id="socials" class="fade-in">
+  <h2 class="section-title">My socials:</h2>
+
+  <!-- ADD / REMOVE / EDIT buttons here — each <a> is one button -->
+  <div class="btn-grid">
+    <a class="btn-pill" href="https://github.com/Panagiotis-Katziotis" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn-pill" href="https://www.youtube.com/@Panagiotis_Katziotis" target="_blank" rel="noopener">YouTube</a>
+    <a class="btn-pill" href="https://bsky.app/profile/panagiotiskatz.bsky.social" target="_blank" rel="noopener">Bluesky</a>
+    <a class="btn-pill" href="https://www.pi.fyi/u/pkatz" target="_blank" rel="noopener">PI.FYI</a>
+    <a class="btn-pill" href="https://archive.org/details/@panagiotis_katziotis" target="_blank" rel="noopener">Internet Archive</a>
+    <a class="btn-pill" href="#" target="_blank" rel="noopener">Itch.io</a>
+    <a class="btn-pill" href="https://app.daily.dev/panagiotis_katziotis" target="_blank" rel="noopener">daily.dev</a>
+    <a class="btn-pill" href="https://panagiotis-katziotis.pckt.blog/" target="_blank" rel="noopener">pckt</a>
+    <a class="btn-pill" href="https://surf.social/feed/surf%2Fprofile%2F01krgy0n42vj52n0krcmntwfe6" target="_blank" rel="noopener">Surf</a>
+    <a class="btn-pill" href="https://stackoverflow.com/users/32604858/%ce%a0%ce%b1%ce%bd%ce%b1%ce%b3%ce%b9%cf%8e%cf%84%ce%b7%cf%82-%ce%9a%ce%b1%cf%84%ce%b6%ce%b9%cf%8e%cf%84%ce%b7%cf%82" target="_blank" rel="noopener">Stack Overflow</a>
+    <a class="btn-pill" href="https://www.ycombinator.com/users/panagiotiskatz" target="_blank" rel="noopener">Y Combinator</a>
+    <a class="btn-pill" href="https://audius.co/panagiotis_katziotis" target="_blank" rel="noopener">Audius</a>
+    
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SECTION 6 — RECOMMENDATIONS
+══════════════════════════════════════════════════════════════ -->
+<section id="recommendations" class="fade-in">
+  <h2 class="section-title">Recommendations:</h2>
+
+  <div class="btn-grid">
+    <a class="btn-pill" href="https://winbows.neocities.org" target="_blank" rel="noopener">Winbows XP</a>
+    <a class="btn-pill" href="https://nenrikido.neocities.org" target="_blank" rel="noopener">Nenrikido</a>
+    <a class="btn-pill" href="https://win99.dev" target="_blank" rel="noopener">Windows 99</a>
+    <a class="btn-pill" href="https://kuroi.com.br" target="_blank" rel="noopener">KuroiOS</a>
+    <a class="btn-pill" href="https://message.neocities.org" target="_blank" rel="noopener">Nightscape</a>
+    <a class="btn-pill" href="https://onio.club" target="_blank" rel="noopener">onio.club</a>
+    <a class="btn-pill" href="https://onio.club/test" target="_blank" rel="noopener">onio.club Underground</a>
+    <a class="btn-pill" href="https://www.drifted.com/unbounded" target="_blank" rel="noopener">UNBOUNDED™</a>
+    <a class="btn-pill" href="https://standardhub.github.io/sequence-puzzle/sequence%20puzzle.html" target="_blank" rel="noopener">Number Puzzle</a>
+    <a class="btn-pill" href="https://ishandutta2007.github.io/uttt/" target="_blank" rel="noopener">Ultimate Tic-Tac-Toe</a>
+    <a class="btn-pill" href="https://quenq.com/" target="_blank" rel="noopener">Quenq</a>
+    <a class="btn-pill" href="https://technotesgr.com/" target="_blank" rel="noopener">technotesgr</a>
+    <a class="btn-pill" href="https://museum.parallel.ai/introduction?era=social-web" target="_blank" rel="noopener">Museum of the Human Web</a>
+    <a class="btn-pill" href="https://classic.talkomatic.co/" target="_blank" rel="noopener">Talkomatic</a>
+  </div>
+</section>
+
+<footer>Panagiotis Katziotis &nbsp;·&nbsp; 2026</footer>
+
+<!-- ─── SCROLL ANIMATION ──────────────────────────────────────── -->
+<script>
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
-
-
